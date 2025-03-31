@@ -141,7 +141,6 @@ function App() {
             justifyContent: "center",
             alignItems: "flex-start",
             flexWrap: "wrap",
-            gap: 32,
             padding: "2rem",
           }}
         >
@@ -153,19 +152,17 @@ function App() {
                 justifyContent: "center",
                 alignItems: "flex-start",
                 flexWrap: "wrap",
-                gap: 32,
                 padding: "2rem",
-                position: "relative",
               }}
             >
               <div
                 key={index}
                 style={{
+                  position: "relative",
                   display: "flex",
                   width: "auto",
                   height: "30rem",
                   justifyContent: "center",
-                  gap: 32,
                 }}
               >
                 <img
