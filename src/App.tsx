@@ -1,5 +1,4 @@
 import { toPng } from "html-to-image";
-import JSZip from "jszip";
 import { useRef, useState } from "react";
 import "./App.css";
 import iphone13Goldframe from "./assets/iphone13_gold.png";
@@ -38,20 +37,15 @@ function App() {
   };
 
   const handleDownload = async () => {
-    const zip = new JSZip();
-    const promises = screenshots.map((_, index) =>
-      toPng(iphoneFrameRefs.current[index], {}).then((dataUrl) =>
-        zip.file(`screenshot-with-frame-${index + 1}.png`, dataUrl)
-      )
-    );
-    await Promise.all(promises).then(() => {
-      zip.generateAsync({ type: "blob" }).then((blob) => {
+    const downloadPromises = screenshots.map((_, index) =>
+      toPng(iphoneFrameRefs.current[index], {}).then((dataUrl) => {
         const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "screenshots-with-iphone-frames.zip";
+        link.href = dataUrl;
+        link.download = `screenshot-with-frame-${index + 1}.png`;
         link.click();
-      });
-    });
+      })
+    );
+    await Promise.all(downloadPromises);
   };
 
   const handleFrameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -142,45 +136,60 @@ function App() {
         }}
       >
         <div
-          ref={(el) => (iphoneFrameRefs.current[0] = el! as any)}
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "flex-start",
             flexWrap: "wrap",
             gap: 32,
+            padding: "2rem",
           }}
         >
           {screenshots.map((screenshot, index) => (
             <div
+              ref={(el) => (iphoneFrameRefs.current[index] = el! as any)}
               style={{
                 display: "flex",
-                width: "auto",
-                height: "30rem",
                 justifyContent: "center",
+                alignItems: "flex-start",
+                flexWrap: "wrap",
+                gap: 32,
+                padding: "2rem",
+                position: "relative",
               }}
             >
-              <img
+              <div
                 key={index}
-                src={screenshot}
                 style={{
-                  objectFit: "contain",
+                  display: "flex",
+                  width: "auto",
                   height: "30rem",
-                  scale: "0.97",
-                  zIndex: 1,
-                  borderRadius: "2rem",
+                  justifyContent: "center",
+                  gap: 32,
                 }}
-                alt="screenshot"
-              />
-              <img
-                src={selectedFrame}
-                alt="iphone 16 frame"
-                style={{
-                  position: "absolute",
-                  height: "30rem",
-                  zIndex: 2,
-                }}
-              />
+              >
+                <img
+                  key={index}
+                  src={screenshot}
+                  style={{
+                    objectFit: "contain",
+                    height: "30rem",
+                    scale: "0.97",
+                    zIndex: 1,
+                    borderRadius: "2rem",
+                  }}
+                  alt="screenshot"
+                />
+                <img
+                  src={selectedFrame}
+                  alt="iphone 16 frame"
+                  style={{
+                    position: "absolute",
+                    height: "30rem",
+                    zIndex: 2,
+                  }}
+                />
+              </div>
             </div>
           ))}
         </div>
@@ -190,4 +199,3 @@ function App() {
 }
 
 export default App;
-
