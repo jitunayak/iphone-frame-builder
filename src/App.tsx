@@ -15,6 +15,7 @@ function App() {
   const [screenshots, setScreenshots] = useState<string[]>([]);
   const [selectedFrame, setSelectedFrame] = useState(iphone16frame);
   const iphoneFrameRefs = useRef<HTMLDivElement[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -31,6 +32,9 @@ function App() {
 
   const handleClear = () => {
     setScreenshots([]);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleDownload = async () => {
@@ -93,6 +97,7 @@ function App() {
         }}
       >
         <input
+          ref={fileInputRef}
           type="file"
           accept=".png, .jpg, .jpeg"
           multiple
@@ -100,10 +105,10 @@ function App() {
         />
         <div style={{ display: "flex", gap: "1rem" }}>
           <select onChange={handleFrameChange}>
-            <option value="iphone13">iPhone 13 Midnight</option>
-            <option value="iphone13Gold">iPhone 13 Gold </option>
             <option value="iphone16">iPhone 16 Black</option>
             <option value="iphone16Natural">iPhone 16 Natural </option>
+            <option value="iphone13">iPhone 13 Midnight</option>
+            <option value="iphone13Gold">iPhone 13 Gold </option>
           </select>
           <button
             onClick={handleDownload}
@@ -137,7 +142,7 @@ function App() {
           ref={(el) => (iphoneFrameRefs.current[0] = el! as any)}
           style={{
             display: "flex",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             alignItems: "flex-start",
             flexWrap: "wrap",
             gap: 32,
