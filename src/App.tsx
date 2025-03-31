@@ -94,6 +94,7 @@ function App() {
           left: "1rem",
           right: "1rem",
           justifyContent: "space-between",
+          flexWrap: "wrap",
         }}
       >
         <input
@@ -103,32 +104,34 @@ function App() {
           multiple
           onChange={handleImageChange}
         />
-        <div style={{ display: "flex", gap: "1rem" }}>
+        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
           <select onChange={handleFrameChange}>
             <option value="iphone16">iPhone 16 Black</option>
             <option value="iphone16Natural">iPhone 16 Natural </option>
             <option value="iphone13">iPhone 13 Midnight</option>
             <option value="iphone13Gold">iPhone 13 Gold </option>
           </select>
-          <button
-            onClick={handleDownload}
-            style={{
-              backgroundColor: screenshots.length > 0 ? "#000" : "#ccc",
-              color: screenshots.length > 0 ? "white" : "black",
-            }}
-          >
-            {screenshots.length > 0
-              ? `Download ${screenshots.length} frame${
-                  screenshots.length > 1 ? "s" : ""
-                }`
-              : "No Files"}
-          </button>
-          <button
-            onClick={handleClear}
-            style={{ backgroundColor: "#ccc", color: "black" }}
-          >
-            Clear
-          </button>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <button
+              onClick={handleDownload}
+              style={{
+                backgroundColor: screenshots.length > 0 ? "#000" : "#ccc",
+                color: screenshots.length > 0 ? "white" : "black",
+              }}
+            >
+              {screenshots.length > 0
+                ? `Download ${screenshots.length} frame${
+                    screenshots.length > 1 ? "s" : ""
+                  }`
+                : "No Files"}
+            </button>
+            <button
+              onClick={handleClear}
+              style={{ backgroundColor: "#ccc", color: "black" }}
+            >
+              Clear
+            </button>
+          </div>
         </div>
       </div>
 
